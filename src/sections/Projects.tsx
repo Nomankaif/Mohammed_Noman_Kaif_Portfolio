@@ -33,8 +33,8 @@ export const Projects = () => {
   }, [selectedProjectIndex]);
 
   return (
-    <section className="my-20 c-space">
-      <p className="head-text">My Work</p>
+    <section className="my-20 c-space" id="work">
+      <p className="head-text">My freelance work</p>
 
       <div className="mt-12 grid w-full grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="relative flex flex-col gap-5 px-5 py-10 shadow-2xl shadow-black-200 sm:p-10">
@@ -67,30 +67,34 @@ export const Projects = () => {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-5">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               {currentProject.tags.map((tag) => (
-                <div
-                  key={`${currentProject.title}-${tag.name}`}
-                  className="tech-logo"
+                <span
+                  key={`${currentProject.title}-${tag}`}
+                  className="rounded-full border border-black-300 px-3 py-1 text-xs text-white-600"
                 >
-                  <img src={tag.path} alt={tag.name} />
-                </div>
+                  {tag}
+                </span>
               ))}
             </div>
 
-            <a
-              href={currentProject.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="flex items-center gap-2 text-white-600"
-            >
-              <p>Check live site</p>
-              <img
-                src="/assets/arrow-up.png"
-                className="size-3"
-                alt="Arrow Up"
-              />
-            </a>
+            {currentProject.href ? (
+              <a
+                href={currentProject.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center gap-2 text-white-600"
+              >
+                <span>Check live site</span>
+                <img
+                  src="/assets/arrow-up.png"
+                  className="size-3"
+                  alt="Arrow Up"
+                />
+              </a>
+            ) : (
+              <span className="text-white-600">In progress</span>
+            )}
           </div>
 
           <div className="mt-7 flex items-center justify-between">

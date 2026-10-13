@@ -29,10 +29,11 @@ export const About = () => {
             />
 
             <div>
-              <p className="grid-headtext">Hi, I&apos;m Shubham</p>
+              <p className="grid-headtext">Hi, I&apos;m Md Noman Kaif</p>
               <p className="grid-subtext">
-                With 5 years of experience, I have honed my skills in frontend
-                and backend development, with a focus on animated 3D websites.
+                I&apos;m a full-stack developer from India. I build responsive
+                web apps and APIs, from clean interfaces to reliable backend
+                logic.
               </p>
             </div>
           </div>
@@ -49,8 +50,8 @@ export const About = () => {
             <div>
               <p className="grid-headtext">Tech Stack</p>
               <p className="grid-subtext">
-                I specialize in Javascript/Typescript with a focus on React and
-                Next.js ecosystems.
+                I work with React, Node.js, Express, MongoDB, Tailwind CSS,
+                Java, and Spring Boot.
               </p>
             </div>
           </div>
@@ -80,11 +81,11 @@ export const About = () => {
 
             <div>
               <p className="grid-headtext">
-                I work remotely across most timezones.
+                Based in India, open to remote work
               </p>
 
               <p className="grid-subtext">
-                I&apos;m based in India, with remote work available.
+                I&apos;m open to collaborating across locations and time zones.
               </p>
 
               <Button href="#contact" containerClass="w-full mt-10" isBeam>
@@ -122,7 +123,8 @@ export const About = () => {
 
             <div className="space-y-2">
               <p className="grid-subtext text-center">
-                Contact me through email
+                Have a project or opportunity in mind? Copy my email and let&apos;s
+                talk.
               </p>
 
               <div className="copy-container">

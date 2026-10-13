@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { links, navLinks } from "../constants";
+import { navLinks } from "../constants";
 import { cn } from "../lib/utils";
 
 interface NavItemsProps {
@@ -16,18 +16,6 @@ const NavItems = ({ onNavigate }: NavItemsProps) => (
         </a>
       </li>
     ))}
-
-    <li className="nav-li">
-      <a
-        href={links.sourceCode}
-        target="_blank"
-        rel="noreferrer noopener"
-        className="nav-li_a"
-        onClick={onNavigate}
-      >
-        Source Code
-      </a>
-    </li>
   </ul>
 );
 
@@ -45,7 +33,7 @@ export const Navbar = () => {
             href="#"
             className="text-xl font-bold text-neutral-400 transition-colors hover:text-white"
           >
-            Shubham
+            Md Noman Kaif
           </a>
 
           <button

@@ -12,7 +12,7 @@ export const Experience = () => {
   >("idle");
 
   return (
-    <section className="c-space my-20" id="work">
+    <section className="c-space my-20" id="experience">
       <div className="w-full text-white-600">
         <h3 className="head-text">My work experience</h3>
 
@@ -38,7 +38,17 @@ export const Experience = () => {
           <div className="work-content">
             <div className="px-2.5 py-5 sm:px-5 sm:py-10">
               {workExperiences.map(
-                ({ animation, duration, icon, id, name, pos, title }) => (
+                ({
+                  animation,
+                  descriptionAfter,
+                  descriptionBefore,
+                  duration,
+                  id,
+                  logo,
+                  name,
+                  pos,
+                  website,
+                }) => (
                   <div
                     key={id}
                     className="work-content_container group"
@@ -48,7 +58,17 @@ export const Experience = () => {
                   >
                     <div className="flex h-full flex-col items-center justify-start py-2">
                       <div className="work-content_logo">
-                        <img src={icon} alt={name} className="size-full" />
+                        {logo ? (
+                          <img
+                            src={logo}
+                            alt={`${name} logo`}
+                            className="size-full rounded-md object-cover"
+                          />
+                        ) : (
+                          <span className="flex size-full items-center justify-center text-xl font-bold text-white">
+                            {name.charAt(0)}
+                          </span>
+                        )}
                       </div>
 
                       <div className="work-content_bar" />
@@ -62,7 +82,19 @@ export const Experience = () => {
                       </p>
 
                       <div className="transition duration-500 ease-in-out group-hover:text-white">
-                        {title}
+                        {descriptionBefore}
+                        {website && (
+                          <a
+                            href={website.href}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="text-white underline underline-offset-2"
+                            onClick={(event) => event.stopPropagation()}
+                          >
+                            {website.label}
+                          </a>
+                        )}
+                        {descriptionAfter}
                       </div>
                     </div>
                   </div>

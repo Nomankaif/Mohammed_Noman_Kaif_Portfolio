@@ -1,12 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha,
-} from "react-google-recaptcha-v3";
 import { toast } from "sonner";
 
 import {
-  CONTACT_RECAPTCHA_ACTION,
   isValidContactEmail,
   isValidContactMessage,
   isValidContactName,
@@ -22,13 +17,9 @@ const FIELD_VALIDATORS: Record<
   message: isValidContactMessage,
 };
 
-const fieldInputClassName =
-  "field-input disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75";
+const fieldInputClassName = "field-input";
 
 const ContactForm = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
-  const formRef = useRef<HTMLFormElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const hasAttemptedSubmit = useRef(false);
 
@@ -42,7 +33,6 @@ const ContactForm = () => {
     email: false,
     message: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   useLayoutEffect(() => {
     const el = messageRef.current;
@@ -93,62 +83,12 @@ const ContactForm = () => {
     return !nextErrors.name && !nextErrors.email && !nextErrors.message;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    if (!executeRecaptcha) {
-      toast.error("reCAPTCHA is not ready. Please try again.");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const recaptchaToken = await executeRecaptcha(CONTACT_RECAPTCHA_ACTION);
-
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.message,
-          recaptchaToken,
-        }),
-      });
-
-      const data = (await response.json().catch(() => null)) as {
-        error?: string;
-      } | null;
-
-      if (!response.ok) {
-        toast.error(data?.error ?? "Something went wrong!");
-        return;
-      }
-
-      setForm({
-        name: "",
-        email: "",
-        message: "",
-      });
-      setFieldErrors({
-        name: false,
-        email: false,
-        message: false,
-      });
-
-      toast.success("Your message has been sent!");
-    } catch (error) {
-      console.error(error);
-
-      toast.error("Something went wrong!");
-    } finally {
-      setIsLoading(false);
-    }
+    toast.success("Thanks for reaching out! I look forward to connecting soon.");
   };
 
   return (
@@ -160,8 +100,7 @@ const ContactForm = () => {
       </p>
 
       <form
-        ref={formRef}
-        onSubmit={(e) => void handleSubmit(e)}
+        onSubmit={handleSubmit}
         className="mt-12 flex flex-col space-y-7"
       >
         <label className="space-y-3" htmlFor="name">
@@ -177,7 +116,6 @@ const ContactForm = () => {
             placeholder="John Doe"
             autoCapitalize="on"
             maxLength={200}
-            disabled={isLoading}
             aria-invalid={fieldErrors.name}
             aria-describedby="name-error"
           />
@@ -203,7 +141,6 @@ const ContactForm = () => {
             placeholder="john.doe@email.com"
             autoCapitalize="off"
             maxLength={100}
-            disabled={isLoading}
             aria-invalid={fieldErrors.email}
             aria-describedby="email-error"
           />
@@ -230,7 +167,6 @@ const ContactForm = () => {
             placeholder="Hi, I'm interested in..."
             autoCapitalize="on"
             maxLength={500}
-            disabled={isLoading}
             aria-invalid={fieldErrors.message}
             aria-describedby="message-error"
           />
@@ -245,32 +181,20 @@ const ContactForm = () => {
           </span>
         </label>
 
-        <button
-          type="submit"
-          className="field-btn disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75"
-          disabled={isLoading}
-        >
-          {isLoading ? "Sending..." : "Send Message"}
-
-          {!isLoading && (
-            <img
-              src="/assets/arrow-up.png"
-              alt="Arrow"
-              className="field-btn_arrow"
-            />
-          )}
+        <button type="submit" className="field-btn">
+          Submit
+          <img
+            src="/assets/arrow-up.png"
+            alt="Arrow"
+            className="field-btn_arrow"
+          />
         </button>
-        <p className="mt-3 text-xs text-white-600/70">
-          This site is protected by reCAPTCHA.
-        </p>
       </form>
     </>
   );
 };
 
 export const Contact = () => {
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-
   return (
     <section className="my-20 c-space" id="contact">
       <div className="relative flex min-h-screen flex-col items-center justify-center">
@@ -283,15 +207,7 @@ export const Contact = () => {
         <div className="contact-container">
           <h3 className="head-text">Let&apos;s talk</h3>
 
-          {siteKey ? (
-            <GoogleReCaptchaProvider reCaptchaKey={siteKey}>
-              <ContactForm />
-            </GoogleReCaptchaProvider>
-          ) : (
-            <p className="mt-3 text-lg text-white-600">
-              Contact form is currently unavailable.
-            </p>
-          )}
+          <ContactForm />
         </div>
       </div>
     </section>
